@@ -17,14 +17,14 @@ public class DummyPlayer extends Player {
 	}
 
 	@Override
-	public Bid bid() {
+	public void needBid() {
 		String[] suits = {"Spades","Clubs","Diamonds","Hearts","No Trump"};
 		if(Math.random()>.5) {
-			return new Bid(0,"none",true, this);
+			g.notifyBid(new Bid(0,"none",true, this));
 		} else {
 			String suit = suits[(int)( Math.random()*5)];
 			int num = (int)(Math.random()*5)+6;
-			return new Bid(num, suit, false, this);
+			g.notifyBid(new Bid(num, suit, false, this));
 		}
 
 	}

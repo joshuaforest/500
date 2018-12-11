@@ -14,8 +14,11 @@ public class Game {
 	Card[] playedCards = new Card[4];
 	int lead;
 
+	int bidIndex;
+	Bid highBid;
 
-	public Game(Player[] players) {
+
+    public Game(Player[] players) {
 		for(int i=0;i<4;i++) {
 			players[i].setGame(this);
 			players[i].setIndex(i);
@@ -28,18 +31,10 @@ public class Game {
 		team1score = 0;
 		team2score = 0;
 		dealer = 0;
-		
-		while(team1score < 500 && team2score <500 && team1score > -500 && team2score > -500) {
-			dealHands();
-			curBid = startBids();
-			curBid.getPlayer().takeBlind(blind);
-			playHands();
-			countScores();
-			dealer = (dealer+1)%4;
-			team1Tricks = 0;
-			team2Tricks = 0;
+
+		dealHands();
+
 		}
-	}
 	
 	private void countScores() {
 		if(setTrump == 0) {
@@ -66,6 +61,9 @@ public class Game {
 			}
 			team1score+=10*team1Tricks;
 		}
+        dealer = (dealer+1)%4;
+        team1Tricks = 0;
+        team2Tricks = 0;
 	}
 
 	public void playHands() {
@@ -80,6 +78,7 @@ public class Game {
 			lead = countTrick(lead);
 			playedCards = new Card[4];
 		}
+        countScores();
 	}
 
 	public int getLead(){
@@ -149,37 +148,53 @@ public class Game {
 		return false;
 	}
 	
-	public Bid startBids() {
-		int bidIndex = (dealer + 1)%4;
-		Bid highBid = new Bid(0,"none",true,players[0]);
-		for(int i=0;i<4;i++) {
-			Bid b = players[bidIndex].bid();
-			bidIndex = (bidIndex +1)%4;
-			if(b.compareTo(highBid)==-1 || b.compareTo(highBid)==0) {
-				b.setPass(true);
-			}
-			if(b.compareTo(highBid)==1) {
-				highBid = b;
-				setTrump = bidIndex%2;
-				}
-		}
-		if(highBid.getPass()) {
-			dealHands();
-			return startBids();
-		}
-		return highBid;
+	public void startBids() {
+	    bidIndex = (dealer + 1)%4;
+	    highBid = new Bid(0,"none",true,players[0]);
+        players[bidIndex].needBid();
+
 	}
+
+	public void notifyBid(Bid b){
+
+        if(b.compareTo(highBid)==-1 || b.compareTo(highBid)==0) {
+            b.setPass(true);
+        }
+        if(b.compareTo(highBid)==1) {
+            highBid = b;
+            setTrump = bidIndex%2;
+        }
+        bidIndex = (bidIndex +1)%4;
+        if(bidIndex == (dealer + 1)%4){
+            if(highBid.getPass()) {
+                dealHands();
+            }
+            else{
+                curBid.getPlayer().takeBlind(blind);
+            }
+        }
+
+        else{
+            players[bidIndex].needBid();
+        }
+    }
+
+    public void notifyBlindTaken(){
+        playHands();
+    }
 	
 	public Bid getBid() {
 		return curBid;
 	}
 	
 	public void dealHands() {
-		resetDeck();
+
+        resetDeck();
 		for(Player p: players) {
 			dealHand(p);
 		}
 		blind = deck;
+        startBids();
 	}
 	
 	public void dealHand(Player p) {

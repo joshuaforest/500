@@ -34,8 +34,8 @@ public abstract class Player {
 	public int getIndex() {return this.index;}
 	
 	public abstract Card playCard();
-	
-	public abstract Bid bid();
+
+	public abstract void needBid();
 	
 	public abstract void takeBlind(ArrayList<Card> blind);
 	
