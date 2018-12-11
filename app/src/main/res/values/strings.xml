@@ -1,0 +1,22 @@
+<resources>
+    <string name="app_name">500</string>
+    <string name="action_settings">Settings</string>
+
+    <string-array name="numbers">
+        <item>#</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+    </string-array>
+
+    <string-array name="suits">
+        <item>Suit</item>
+        <item>Spades</item>
+        <item>Clubs</item>
+        <item>Diamonds</item>
+        <item>Hearts</item>
+        <item>No Trump</item>
+    </string-array>
+</resources>
