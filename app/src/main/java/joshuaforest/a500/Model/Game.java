@@ -36,7 +36,12 @@ public class Game {
 
 		dealHands();
 
-		}
+    }
+
+    private void finishGame(){
+
+    }
+
 	
 	private void countScores() {
 		if(setTrump == 0) {
@@ -66,6 +71,9 @@ public class Game {
         dealer = (dealer+1)%4;
         team1Tricks = 0;
         team2Tricks = 0;
+
+        if(team1score>=500 || team2score>=500 || team1score<=500 || team2score<=500) finishGame();
+        else dealHands();
 	}
 
 	private void playHands() {
