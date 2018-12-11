@@ -45,20 +45,19 @@ public class MainActivity extends AppCompatActivity {
          totalTextView.setText(Float.toString(total));**/
 
 
-        Player[] p = {new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer()};
+        /**Player[] p = {new DummyPlayer(), new DummyPlayer(), new DummyPlayer(), new DummyPlayer()};
         Game g = new Game(p);
         g.startGame();
         totalTextView.setText(g.getTeam1Score()+" "+g.getTeam2Score());
         //System.out.println(g.getTeam1Score());
-        //System.out.println(g.getTeam2Score());
+        //System.out.println(g.getTeam2Score());**/
 
 
-        /**code to actually start game
         Intent startGame = new Intent(this, GameplayActivity.class);
         startActivity(startGame);
 
         //Button startGame = (Button) view;
-        //startGame.setText("Yello"); **/
+        //startGame.setText("Yello");
 
     }
 

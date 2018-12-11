@@ -7,7 +7,6 @@ public class Game {
 	private int team1score, team2score;
 	private ArrayList<Card> deck;
 	private ArrayList<Card> blind;
-	private Bid curBid;
 	private int dealer;
 	private int team1Tricks,team2Tricks;
 	private int setTrump;
@@ -45,26 +44,26 @@ public class Game {
 	
 	private void countScores() {
 		if(setTrump == 0) {
-			if(curBid.getNum() <= team1Tricks) {
-				if(team1Tricks == 10 && 250 > curBid.getValue()) {
+			if(highBid.getNum() <= team1Tricks) {
+				if(team1Tricks == 10 && 250 > highBid.getValue()) {
 					team1score += 250;
 				} else {
-					team1score += curBid.getValue();
+					team1score += highBid.getValue();
 				}
 			} else {
-				team1score -= curBid.getValue();
+				team1score -= highBid.getValue();
 			}
 			team2score+=10*team2Tricks;
 		}
 		if(setTrump == 1) {
-			if(curBid.getNum() <= team2Tricks) {
-				if(team2Tricks == 10 && 250 > curBid.getValue()) {
+			if(highBid.getNum() <= team2Tricks) {
+				if(team2Tricks == 10 && 250 > highBid.getValue()) {
 					team2score += 250;
 				} else {
-					team2score += curBid.getValue();
+					team2score += highBid.getValue();
 				}
 			} else {
-				team2score -= curBid.getValue();
+				team2score -= highBid.getValue();
 			}
 			team1score+=10*team1Tricks;
 		}
@@ -72,12 +71,12 @@ public class Game {
         team1Tricks = 0;
         team2Tricks = 0;
 
-        if(team1score>=500 || team2score>=500 || team1score<=500 || team2score<=500) finishGame();
+        if(team1score>=500 || team2score>=500 || team1score<=-500 || team2score<=-500) finishGame();
         else dealHands();
 	}
 
 	private void playHands() {
-		lead = curBid.getPlayer().getIndex();
+		lead = highBid.getPlayer().getIndex();
 		playerIndex = 0;
         players[lead].needCard();
         tricksLeft=10;
@@ -86,11 +85,11 @@ public class Game {
 	public void notifyCardPlayed(Card c){
         playedCards[(lead+playerIndex)%4]=c;
         playerIndex++;
-        if(playedCards[lead].getIsJoker() && playerIndex-1==0 && curBid.getSuit().equals("No Trump")) {
+        if(playedCards[lead].getIsJoker() && playerIndex-1==0 && highBid.getSuit().equals("No Trump")) {
             players[lead].needSuit();
         }
         else if(playerIndex<4){
-            players[lead+playerIndex].needCard();
+            players[(lead+playerIndex)%4].needCard();
         }
         else{
             lead = countTrick(lead);
@@ -143,13 +142,13 @@ public class Game {
 	}
 	
 	public boolean checkRight(Card c) {
-		String trump = curBid.getSuit();
+		String trump = highBid.getSuit();
 		if(c.getSuit().equals(trump) && c.getRank()==11) return true;
 		return false;
 	}
 	
 	public boolean checkLeft(Card c) {
-		String trump = curBid.getSuit();
+		String trump = highBid.getSuit();
 		if(trump.equals("Hearts")) {
 			if(c.getSuit().equals("Diamonds") && c.getRank()==11) return true;
 		} else if(trump.equals("Diamonds")) {
@@ -163,7 +162,7 @@ public class Game {
 	}
 	
 	public boolean isTrump(Card c) {
-		String trump = curBid.getSuit();
+		String trump = highBid.getSuit();
 		if(c.getIsJoker()) return true;
 		if(trump.equals("Hearts")) {
 			if(c.getSuit().equals("Hearts") || (c.getSuit().equals("Diamonds")&&c.getRank()==11)) return true;
@@ -202,7 +201,7 @@ public class Game {
                 dealHands();
             }
             else{
-                curBid.getPlayer().takeBlind(blind);
+                highBid.getPlayer().takeBlind(blind);
             }
         }
 
@@ -216,7 +215,7 @@ public class Game {
     }
 	
 	public Bid getBid() {
-		return curBid;
+		return highBid;
 	}
 	
 	public void dealHands() {

@@ -21,11 +21,13 @@ public class DummyPlayer extends Player {
 	public void needBid() {
 		String[] suits = {"Spades","Clubs","Diamonds","Hearts","No Trump"};
 		if(Math.random()>.5) {
-			g.notifyBid(new Bid(0,"none",true, this));
+		    Bid b = new Bid(0,"none",true, this);
+			g.notifyBid(b);
 		} else {
 			String suit = suits[(int)( Math.random()*5)];
 			int num = (int)(Math.random()*5)+6;
-			g.notifyBid(new Bid(num, suit, false, this));
+			Bid b = new Bid(num, suit, false, this);
+			g.notifyBid(b);
 		}
 
 	}
