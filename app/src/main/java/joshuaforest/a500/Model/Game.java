@@ -16,6 +16,8 @@ public class Game {
 
 	int bidIndex;
 	Bid highBid;
+	int tricksLeft;
+	int playerIndex;
 
 
     public Game(Player[] players) {
@@ -66,20 +68,42 @@ public class Game {
         team2Tricks = 0;
 	}
 
-	public void playHands() {
+	private void playHands() {
 		lead = curBid.getPlayer().getIndex();
-		for(int i=0;i<10;i++) {
-			for(int j=0;j<4;j++) {
-				playedCards[(lead+j)%4]=players[(lead+j)%4].playCard();
-				if(playedCards[(lead+j)%4].getIsJoker() && j==0 && curBid.getSuit().equals("No Trump")) {
-					playedCards[(lead+j)%4].setSuit(players[(lead+j)%4].chooseSuit());
-				}
-			}
-			lead = countTrick(lead);
-			playedCards = new Card[4];
-		}
-        countScores();
+		playerIndex = 0;
+        players[lead].needCard();
+        tricksLeft=10;
 	}
+
+	public void notifyCardPlayed(Card c){
+        playedCards[(lead+playerIndex)%4]=c;
+        playerIndex++;
+        if(playedCards[lead].getIsJoker() && playerIndex-1==0 && curBid.getSuit().equals("No Trump")) {
+            players[lead].needSuit();
+        }
+        else if(playerIndex<4){
+            players[lead+playerIndex].needCard();
+        }
+        else{
+            lead = countTrick(lead);
+            playerIndex = 0;
+            playedCards = new Card[4];
+            tricksLeft--;
+            if(tricksLeft>0) {
+                players[lead].needCard();
+            } else{
+                countScores();
+            }
+        }
+    }
+
+    public void notifySuit(String s){
+        playedCards[(lead+playerIndex-1)%4].setSuit(s);
+        players[playerIndex].needCard();
+    }
+
+
+
 
 	public int getLead(){
 		return lead;

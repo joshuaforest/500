@@ -9,12 +9,13 @@ import joshuaforest.a500.Model.Player;
 public class DummyPlayer extends Player {
 
 	@Override
-	public Card playCard() {
-		int index = (int) (Math.random()*this.hand.size());
-		Card c = this.hand.get(index);
-		if(checkEligiblePlay(c)) return this.hand.remove(index);
-		else return playCard();
-	}
+	public void needCard() {
+        int index = (int) (Math.random()*this.hand.size());
+        Card c = this.hand.get(index);
+        if(checkEligiblePlay(c)) g.notifyCardPlayed(this.hand.remove(index));
+        else  needCard();
+    }
+
 
 	@Override
 	public void needBid() {
@@ -37,11 +38,13 @@ public class DummyPlayer extends Player {
 			int index = (int)(Math.random()*numCards);
 			hand.remove(index);
 		}
+		g.notifyBlindTaken();
 	}
-	
-	public String chooseSuit() {
-		String[] suits = {"Spades","Clubs","Diamonds","Hearts"};
-		return suits[(int)( Math.random()*4)];
-	}
+
+	@Override
+	public void needSuit(){
+        String[] suits = {"Spades","Clubs","Diamonds","Hearts"};
+        g.notifySuit(suits[(int)( Math.random()*4)]);
+    }
 
 }

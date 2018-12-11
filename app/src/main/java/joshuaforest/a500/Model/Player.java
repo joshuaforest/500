@@ -32,14 +32,14 @@ public abstract class Player {
 	}
 
 	public int getIndex() {return this.index;}
-	
-	public abstract Card playCard();
 
 	public abstract void needBid();
+
+    public abstract void needSuit();
+
+    public abstract void needCard();
 	
 	public abstract void takeBlind(ArrayList<Card> blind);
-	
-	public abstract String chooseSuit();
 
 	public boolean checkEligiblePlay(Card c){
 		if(hand.indexOf(c)==-1) return false;

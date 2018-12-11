@@ -7,19 +7,19 @@ import joshuaforest.a500.Model.Card;
 import joshuaforest.a500.Model.Player;
 
 public class UIPlayer extends Player {
-    @Override
-    public Card playCard() {
-
-        //TODO
-        return null;
-    }
 
     @Override
-    public void notifyBid() {
+    public void needBid() {
         //TODO
     }
 
-    public void Bid(){
+    @Override
+    public void needSuit() {
+        //TODO
+    }
+
+    @Override
+    public void needCard() {
         //TODO
     }
 
@@ -29,10 +29,5 @@ public class UIPlayer extends Player {
 
     }
 
-    @Override
-    public String chooseSuit() {
 
-        //TODO
-        return null;
-    }
 }
