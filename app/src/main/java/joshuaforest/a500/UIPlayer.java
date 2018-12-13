@@ -32,7 +32,7 @@ public class UIPlayer extends Player {
 
     @Override
     public void notifyDealHands(){
-
+        sortHand("No Trump");
     }
 
     @Override

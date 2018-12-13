@@ -50,5 +50,25 @@ public class Card {
 		String name = rank + "_of_" + this.suit.toLowerCase();
 		return name;
 	}
+
+	/**
+	 * for purposes of sorting hands
+	 * @return if this card is greater than c
+	 */
+	public boolean compareTo(Card c){
+	    if(c.isJoker) return true;
+	    if(c.isJoker) return false;
+		if(this.suit.equals("Spades")) {
+			return false;
+		} else if(this.suit.equals("Clubs")){
+			return c.suit.equals("Spades");
+		} else if(this.suit.equals("Diamonds")){
+			return c.suit.equals("Clubs") || c.suit.equals("Spades");
+
+		} else if(this.suit.equals("Hearts")){
+			return true;
+		}
+		return false;
+	}
 	
 }
