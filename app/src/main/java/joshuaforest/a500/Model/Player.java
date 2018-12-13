@@ -85,12 +85,16 @@ public abstract class Player {
 
 	public void sortHand(String trump){
 	    if(trump.equals("Spades")){
+	        //TODO
 
         } else if(trump.equals("Clubs")){
+	        //TODO
 
         } else if(trump.equals("Diamonds")){
+	        //TODO
 
         } else if(trump.equals("Hearts")){
+	        //TODO
 
         } else {
             ArrayList<Card> sortedHand = new ArrayList<Card>();

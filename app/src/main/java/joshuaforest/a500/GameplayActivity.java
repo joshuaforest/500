@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageButton;
@@ -12,6 +13,7 @@ import android.widget.Spinner;
 
 import java.util.ArrayList;
 
+import joshuaforest.a500.Model.Bid;
 import joshuaforest.a500.Model.Card;
 import joshuaforest.a500.Model.Game;
 import joshuaforest.a500.Model.Player;
@@ -21,7 +23,7 @@ import joshuaforest.a500.Model.Player;
  * Created by joshuaforest on 10/12/18.
  */
 
-public class GameplayActivity extends Activity {
+public class GameplayActivity extends Activity implements AdapterView.OnItemSelectedListener {
 
     LinearLayout handLayout;
     LinearLayout bidLayout;
@@ -31,6 +33,11 @@ public class GameplayActivity extends Activity {
 
     Game g;
     UIPlayer player;
+
+    boolean bidRankGiven = false;
+    int bidNum;
+    boolean bidSuitGiven = false;
+    String suitBeingBid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +49,7 @@ public class GameplayActivity extends Activity {
 
         player = new UIPlayer();
         Player[] p = {player, new DummyPlayer(), new DummyPlayer(), new DummyPlayer()};
-        Game g = new Game(p);
+        g = new Game(p);
         g.startGame(this);
     }
 
@@ -60,17 +67,21 @@ public class GameplayActivity extends Activity {
     }
 
     public void needBid(){
+        bidRankGiven = false;
+        bidSuitGiven = false;
         bid.setEnabled(false);
 
         //Set bid number resources to bid number spinner
         ArrayAdapter<CharSequence> numAdapter = ArrayAdapter.createFromResource(this, R.array.numbers, android.R.layout.simple_spinner_item);
         numAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         bidNumbers.setAdapter(numAdapter);
+        bidNumbers.setOnItemSelectedListener(this);
 
         //Set bid suit resources to bid suit spinner
         ArrayAdapter<CharSequence> suitAdapter = ArrayAdapter.createFromResource(this, R.array.suits, android.R.layout.simple_spinner_item);
         suitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         bidSuit.setAdapter(suitAdapter);
+        bidSuit.setOnItemSelectedListener(this);
 
         ArrayList<Card> cards = player.getHand();
         for(int i=0;i<handLayout.getChildCount();i++){
@@ -101,5 +112,62 @@ public class GameplayActivity extends Activity {
         ImageButton b = (ImageButton) view;
         b.setImageDrawable(null);
         b.setVisibility(view.GONE);
+    }
+
+    @Override
+    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+        if(adapterView.getId()==bidSuit.getId()) {
+            suitBeingBid = adapterView.getItemAtPosition(i).toString();
+            if(!suitBeingBid.equals("Suit")) bidSuitChanged();
+            else{
+                bidSuitRemoved();
+            }
+        }
+        else if(adapterView.getId()==bidNumbers.getId()) {
+            String bidNumStr = adapterView.getItemAtPosition(i).toString();
+            if(!bidNumStr.equals("#")){
+                bidNum = Integer.parseInt(bidNumStr);
+                bidNumberChanged();
+            } else{
+                bidNumberRemoved();
+            }
+
+        }
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> adapterView) {
+        if(adapterView.getId()==bidSuit.getId()) bidSuitRemoved();
+        else if(adapterView.getId()==bidNumbers.getId()) bidNumberRemoved();
+    }
+
+    public void bidNumberChanged(){
+        bidRankGiven = true;
+        if(bidSuitGiven == true){
+            Bid b = new Bid(bidNum,suitBeingBid,false,player);
+            if(b.compareTo(g.getBid()) == 1) bid.setEnabled(true);
+            else bid.setEnabled(false);
+        }
+    }
+
+    public void bidNumberRemoved(){
+        bidRankGiven = false;
+        bidNum = 0;
+        bid.setEnabled(false);
+    }
+
+    public void bidSuitChanged(){
+        bidSuitGiven = true;
+        if(bidRankGiven == true){
+            Bid b = new Bid(bidNum,suitBeingBid,false,player);
+            if(b.compareTo(g.getBid()) == 1) bid.setEnabled(true);
+            else bid.setEnabled(false);
+        }
+    }
+
+    public void bidSuitRemoved(){
+        bidSuitGiven = false;
+        suitBeingBid = null;
+        bid.setEnabled(false);
     }
 }

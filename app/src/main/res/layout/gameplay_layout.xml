@@ -33,18 +33,37 @@
         <Spinner
             android:id="@+id/spnSuit"
             android:layout_width="150dp"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+          />
         <Spinner
             android:id="@+id/spnNumber"
             android:layout_width="100dp"
             android:layout_height="wrap_content" />
 
-        <Button
-            android:id="@+id/btnBid"
+        <LinearLayout
             android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:clickable="false"
-            android:text="Bid" />
+            android:layout_height="80dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnBid"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:clickable="false"
+                android:text="Bid"
+                />
+
+            <Button
+                android:id="@+id/btnPass"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:clickable="false"
+                android:text="Pass"
+                />
+
+        </LinearLayout>
+
+
     </LinearLayout>
 
 

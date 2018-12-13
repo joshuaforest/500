@@ -56,8 +56,11 @@ public class Card {
 	 * @return if this card is greater than c
 	 */
 	public boolean compareTo(Card c){
-	    if(c.isJoker) return true;
 	    if(c.isJoker) return false;
+	    if(this.isJoker) return true;
+	    if(c.suit.equals(this.suit)){
+	    	return this.rank > c.rank;
+		}
 		if(this.suit.equals("Spades")) {
 			return false;
 		} else if(this.suit.equals("Clubs")){
