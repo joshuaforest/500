@@ -31,7 +31,11 @@ public class DummyPlayer extends Player {
 		}
 
 	}
-	
+
+	public void notifyDealHands(){ }
+
+    public void notifyStartGame(GameplayActivity act){ }
+
 	@Override
 	public void takeBlind(ArrayList<Card> blind) {
 		hand.addAll(blind);

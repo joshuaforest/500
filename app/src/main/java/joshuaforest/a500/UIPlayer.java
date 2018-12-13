@@ -7,10 +7,11 @@ import joshuaforest.a500.Model.Card;
 import joshuaforest.a500.Model.Player;
 
 public class UIPlayer extends Player {
+    GameplayActivity act;
 
     @Override
     public void needBid() {
-        //TODO
+        act.needBid();
     }
 
     @Override
@@ -27,6 +28,17 @@ public class UIPlayer extends Player {
     public void takeBlind(ArrayList<Card> blind) {
         //TODO
 
+    }
+
+    @Override
+    public void notifyDealHands(){
+
+    }
+
+    @Override
+    public void notifyStartGame(GameplayActivity act){
+        this.act = act;
+        act.startGame();
     }
 
 

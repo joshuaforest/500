@@ -1,6 +1,13 @@
 package joshuaforest.a500.Model;
 
+import org.json.JSONObject;
+import org.json.JSONException;
+
 import java.util.ArrayList;
+import java.util.HashMap;
+
+import joshuaforest.a500.GameplayActivity;
+
 
 public class Game {
 	private Player[] players;
@@ -19,6 +26,8 @@ public class Game {
 	int playerIndex;
 
 
+
+
     public Game(Player[] players) {
 		for(int i=0;i<4;i++) {
 			players[i].setGame(this);
@@ -28,18 +37,18 @@ public class Game {
 		resetDeck();
 	}
 	
-	public void startGame() {
+	public void startGame(GameplayActivity act) {
 		team1score = 0;
 		team2score = 0;
 		dealer = 0;
+		for(Player p: players){
+		    p.notifyStartGame(act);
+        }
 
 		dealHands();
-
     }
 
-    private void finishGame(){
-
-    }
+    private void finishGame(){ }
 
 	
 	private void countScores() {
@@ -108,9 +117,6 @@ public class Game {
         playedCards[(lead+playerIndex-1)%4].setSuit(s);
         players[playerIndex].needCard();
     }
-
-
-
 
 	public int getLead(){
 		return lead;
@@ -223,6 +229,7 @@ public class Game {
         resetDeck();
 		for(Player p: players) {
 			dealHand(p);
+			p.notifyDealHands();
 		}
 		blind = deck;
         startBids();

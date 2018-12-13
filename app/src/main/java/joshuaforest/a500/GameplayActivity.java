@@ -29,41 +29,60 @@ public class GameplayActivity extends Activity {
     Spinner bidNumbers;
     Spinner bidSuit;
 
+    Game g;
+    UIPlayer player;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.gameplay_layout);
+        getLayouts();
 
+
+        player = new UIPlayer();
+        Player[] p = {player, new DummyPlayer(), new DummyPlayer(), new DummyPlayer()};
+        Game g = new Game(p);
+        g.startGame(this);
+    }
+
+    private void getLayouts(){
         handLayout = (LinearLayout) findViewById((R.id.handLayout));
         bidLayout = (LinearLayout) findViewById((R.id.bidLayout));
-
+        bidNumbers = (Spinner) bidLayout.findViewById(R.id.spnNumber);
+        bidSuit = (Spinner) bidLayout.findViewById(R.id.spnSuit);
         bid = (Button) bidLayout.findViewById(R.id.btnBid);
+    }
+
+    public void startGame(){
+
+
+    }
+
+    public void needBid(){
         bid.setEnabled(false);
 
         //Set bid number resources to bid number spinner
-        bidNumbers = (Spinner) bidLayout.findViewById(R.id.spnNumber);
         ArrayAdapter<CharSequence> numAdapter = ArrayAdapter.createFromResource(this, R.array.numbers, android.R.layout.simple_spinner_item);
         numAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         bidNumbers.setAdapter(numAdapter);
 
         //Set bid suit resources to bid suit spinner
-        bidSuit = (Spinner) bidLayout.findViewById(R.id.spnSuit);
         ArrayAdapter<CharSequence> suitAdapter = ArrayAdapter.createFromResource(this, R.array.suits, android.R.layout.simple_spinner_item);
         suitAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         bidSuit.setAdapter(suitAdapter);
 
-        UIPlayer hplayer = new UIPlayer();
-        Player[] p = {hplayer, new DummyPlayer(), new DummyPlayer(), new DummyPlayer()};
-         Game g = new Game(p);
-         g.dealHands();
-        ArrayList<Card> cards = hplayer.getHand();
+        ArrayList<Card> cards = player.getHand();
         for(int i=0;i<handLayout.getChildCount();i++){
             ImageButton b = (ImageButton) handLayout.getChildAt(i);
+            b.setClickable(false);
             String fileName = cards.get(i).getFileName();
             int resourceId = getResources().getIdentifier(fileName, "drawable", getPackageName());
             b.setImageResource(resourceId);
         }
+
     }
+
 
     public void setViewHandToNothing(){
         for(int i=0;i<handLayout.getChildCount();i++){

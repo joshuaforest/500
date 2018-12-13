@@ -2,6 +2,8 @@ package joshuaforest.a500.Model;
 
 import java.util.ArrayList;
 
+import joshuaforest.a500.GameplayActivity;
+
 public abstract class Player {
 
 	protected Game g;
@@ -38,6 +40,10 @@ public abstract class Player {
     public abstract void needSuit();
 
     public abstract void needCard();
+
+    public abstract void notifyDealHands();
+
+    public abstract void notifyStartGame(GameplayActivity act);
 	
 	public abstract void takeBlind(ArrayList<Card> blind);
 
