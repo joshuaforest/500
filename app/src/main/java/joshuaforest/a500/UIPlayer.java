@@ -14,6 +14,10 @@ public class UIPlayer extends Player {
         act.needBid();
     }
 
+    public void makeBid(Bid b){
+        g.notifyBid(b);
+    }
+
     @Override
     public void needSuit() {
         //TODO

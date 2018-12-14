@@ -51,14 +51,18 @@
                 android:layout_width="80dp"
                 android:layout_height="40dp"
                 android:clickable="false"
-                android:text="Bid" />
+                android:text="Bid"
+                android:onClick="makeBid"
+                />
 
             <Button
                 android:id="@+id/btnPass"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
                 android:clickable="false"
-                android:text="Pass" />
+                android:text="Pass"
+                android:onClick="pass"
+                />
 
         </LinearLayout>
 

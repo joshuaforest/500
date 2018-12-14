@@ -194,4 +194,14 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
            }
        }
     }
+
+    public void pass(View view) {
+        Bid b = new Bid(0,"nothing",true,player);
+        player.makeBid(b);
+    }
+
+    public void makeBid(View view){
+        Bid b = new Bid(bidNum,suitBeingBid,false,player);
+        player.makeBid(b);
+    }
 }
