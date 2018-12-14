@@ -3,6 +3,7 @@ package joshuaforest.a500;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.constraint.solver.widgets.ConstraintHorizontalLayout;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
@@ -10,6 +11,7 @@ import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -30,9 +32,11 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
     Button bid;
     Spinner bidNumbers;
     Spinner bidSuit;
+    TextView[] playerBids;
 
     Game g;
     UIPlayer player;
+    Player[] p;
 
     boolean bidRankGiven = false;
     int bidNum;
@@ -49,6 +53,7 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
 
         player = new UIPlayer();
         Player[] p = {player, new DummyPlayer(), new DummyPlayer(), new DummyPlayer()};
+        this.p = p;
         g = new Game(p);
         g.startGame(this);
     }
@@ -59,6 +64,16 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
         bidNumbers = (Spinner) bidLayout.findViewById(R.id.spnNumber);
         bidSuit = (Spinner) bidLayout.findViewById(R.id.spnSuit);
         bid = (Button) bidLayout.findViewById(R.id.btnBid);
+
+        TextView player0bid = (TextView) findViewById(R.id.textView);
+        TextView player1bid = (TextView) findViewById(R.id.textView1);
+        TextView player2bid = (TextView) findViewById(R.id.textView2);
+        TextView player3bid = (TextView) findViewById(R.id.textView3);
+        TextView[] playerBids =  {player0bid, player1bid, player2bid, player3bid};
+        for(TextView t : playerBids){
+            t.setVisibility(View.INVISIBLE);
+        }
+        this.playerBids = playerBids;
     }
 
     public void startGame(){
@@ -169,5 +184,14 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
         bidSuitGiven = false;
         suitBeingBid = null;
         bid.setEnabled(false);
+    }
+
+    public void bidSet(Bid b){
+       for(int i = 0; i<4; i++){
+           if(b.getPlayer() == p[i]) {
+               playerBids[i].setVisibility(View.VISIBLE);
+               playerBids[i].setText(b.toString());
+           }
+       }
     }
 }

@@ -66,7 +66,7 @@ public void setPass(boolean p) {
 
 public String toString() {
 	if(pass) {
-		return "pass";
+		return "Pass";
 	} else {
 		return num + " "+suit;
 	}

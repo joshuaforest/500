@@ -17,14 +17,15 @@ public class Game {
 	private int dealer;
 	private int team1Tricks,team2Tricks;
 	private int setTrump;
-	Card[] playedCards = new Card[4];
-	int lead;
+	private Card[] playedCards = new Card[4];
+	private int lead;
 
-	int bidIndex;
-	Bid highBid;
-	int tricksLeft;
-	int playerIndex;
+	private int bidIndex;
+	private Bid highBid;
+	private int tricksLeft;
+	private int playerIndex;
 
+	private GameplayActivity act;
 
 
 
@@ -38,6 +39,7 @@ public class Game {
 	}
 	
 	public void startGame(GameplayActivity act) {
+        this.act = act;
 		team1score = 0;
 		team2score = 0;
 		dealer = 0;
@@ -201,6 +203,7 @@ public class Game {
             highBid = b;
             setTrump = bidIndex%2;
         }
+        act.bidSet(b);
         bidIndex = (bidIndex +1)%4;
         if(bidIndex == (dealer + 1)%4){
             if(highBid.getPass()) {
@@ -257,6 +260,10 @@ public class Game {
 			players[i].setHand(new ArrayList<Card>());
 		}
 	}
+
+	public Card[] getPlayedCards(){
+        return playedCards;
+    }
 	
 	public int getTeam1Score() {
 		return team1score;
@@ -269,6 +276,7 @@ public class Game {
 	public Player[] getPlayers() {
 		return players;
 	}
+
 
 
 }

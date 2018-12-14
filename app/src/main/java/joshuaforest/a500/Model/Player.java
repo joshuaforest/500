@@ -49,10 +49,10 @@ public abstract class Player {
 
 	public boolean checkEligiblePlay(Card c){
 		if(hand.indexOf(c)==-1) return false;
-		if(index == g.lead){
+		if(index == g.getLead()){
 			return true;
 		}
-		Card leadCard = g.playedCards[g.lead];
+		Card leadCard = g.getPlayedCards()[g.getLead()];
 		if(g.isTrump(leadCard)){
 			if(hasTrump()) return g.isTrump(c);
 			return true;
