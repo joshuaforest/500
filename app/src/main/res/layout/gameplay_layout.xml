@@ -14,8 +14,8 @@
         android:id="@+id/btn_Game"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:onClick="onBtnQuit"
         android:text="Quit"
+        android:onClick="onBtnQuit"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -50,19 +50,17 @@
                 android:id="@+id/btnBid"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
-                android:clickable="false"
                 android:text="Bid"
-                android:onClick="makeBid"
-                />
+                android:onClick="makeBid"/>
 
             <Button
                 android:id="@+id/btnPass"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
-                android:clickable="false"
                 android:text="Pass"
                 android:onClick="pass"
                 />
+
 
         </LinearLayout>
 

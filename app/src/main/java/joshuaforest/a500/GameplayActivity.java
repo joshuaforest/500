@@ -117,6 +117,7 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
         }
     }
 
+
     public void onBtnQuit(View view) {
         Intent quitGame = new Intent( getApplicationContext(), MainActivity.class);
         setViewHandToNothing();
@@ -195,7 +196,8 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
        }
     }
 
-    public void pass(View view) {
+
+   public void pass(View view) {
         Bid b = new Bid(0,"nothing",true,player);
         player.makeBid(b);
     }
@@ -204,4 +206,5 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
         Bid b = new Bid(bidNum,suitBeingBid,false,player);
         player.makeBid(b);
     }
+
 }
