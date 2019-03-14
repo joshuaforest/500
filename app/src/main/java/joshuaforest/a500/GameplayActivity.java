@@ -29,10 +29,12 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
 
     LinearLayout handLayout;
     LinearLayout bidLayout;
+    LinearLayout blindLayout;
     Button bid;
     Spinner bidNumbers;
     Spinner bidSuit;
     TextView[] playerBids;
+    gameState state;
 
     Game g;
     UIPlayer player;
@@ -42,6 +44,12 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
     int bidNum;
     boolean bidSuitGiven = false;
     String suitBeingBid;
+
+
+
+    enum gameState{
+        BIDDING, BLIND_CHOOSING, PLAYING;
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,8 +67,9 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
     }
 
     private void getLayouts(){
-        handLayout = (LinearLayout) findViewById((R.id.handLayout));
-        bidLayout = (LinearLayout) findViewById((R.id.bidLayout));
+        handLayout = (LinearLayout) findViewById(R.id.handLayout);
+        blindLayout = (LinearLayout) findViewById(R.id.blindLayout);
+        bidLayout = (LinearLayout) findViewById(R.id.bidLayout);
         bidNumbers = (Spinner) bidLayout.findViewById(R.id.spnNumber);
         bidSuit = (Spinner) bidLayout.findViewById(R.id.spnSuit);
         bid = (Button) bidLayout.findViewById(R.id.btnBid);
@@ -82,10 +91,11 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
     }
 
     public void needBid(){
+
         bidRankGiven = false;
         bidSuitGiven = false;
         bid.setEnabled(false);
-
+        state = gameState.BIDDING;
         //Set bid number resources to bid number spinner
         ArrayAdapter<CharSequence> numAdapter = ArrayAdapter.createFromResource(this, R.array.numbers, android.R.layout.simple_spinner_item);
         numAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -105,8 +115,38 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
             String fileName = cards.get(i).getFileName();
             int resourceId = getResources().getIdentifier(fileName, "drawable", getPackageName());
             b.setImageResource(resourceId);
+            b.setTag(cards.get(i));
         }
 
+    }
+
+
+    public void takeBlind() {
+        state = gameState.BLIND_CHOOSING;
+        bidLayout.setVisibility(View.GONE);
+        blindLayout.setVisibility(View.VISIBLE);
+
+        ArrayList<Card> cards = player.getHand();
+        for(int i=0;i<blindLayout.getChildCount();i++){
+            ImageButton b = (ImageButton) blindLayout.getChildAt(i);
+            b.setClickable(true);
+            b.setVisibility(View.GONE);
+        }
+        for(int i=0;i<g.getBlind().size();i++){
+            ImageButton b = (ImageButton) blindLayout.getChildAt(i);
+            b.setVisibility(View.VISIBLE);
+            String fileName = g.getBlind().get(i).getFileName();
+            int resourceId = getResources().getIdentifier(fileName, "drawable", getPackageName());
+            b.setImageResource(resourceId);
+            b.setTag(g.getBlind().get(i));
+        }
+        for(int i=0;i<cards.size();i++){
+            ImageButton b = (ImageButton) handLayout.getChildAt(i);
+            b.setClickable(true);
+        }
+        for(TextView t : playerBids){
+            t.setVisibility(View.GONE);
+        }
     }
 
 
@@ -125,9 +165,20 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
     }
 
     public void selectCard(View view) {
-        ImageButton b = (ImageButton) view;
-        b.setImageDrawable(null);
-        b.setVisibility(view.GONE);
+        if(state == gameState.BLIND_CHOOSING){
+            if(player.getHand().size() <= 5) return;
+            ImageButton b = (ImageButton) view;
+            b.setImageDrawable(null);
+            b.setVisibility(view.GONE);
+            player.getHand().remove(b.getTag());
+            for(int i = 0; i < 10; i++){
+
+            }
+        } else{
+            ImageButton b = (ImageButton) view;
+            b.setImageDrawable(null);
+            b.setVisibility(view.GONE);
+        }
     }
 
     @Override
@@ -196,7 +247,6 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
        }
     }
 
-
    public void pass(View view) {
         Bid b = new Bid(0,"nothing",true,player);
         player.makeBid(b);
@@ -206,5 +256,6 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
         Bid b = new Bid(bidNum,suitBeingBid,false,player);
         player.makeBid(b);
     }
+
 
 }

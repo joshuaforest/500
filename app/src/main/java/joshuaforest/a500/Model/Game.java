@@ -213,7 +213,6 @@ public class Game {
                 highBid.getPlayer().takeBlind(blind);
             }
         }
-
         else{
             players[bidIndex].needBid();
         }
@@ -264,7 +263,11 @@ public class Game {
 	public Card[] getPlayedCards(){
         return playedCards;
     }
-	
+
+	public ArrayList<Card> getBlind() {
+		return blind;
+	}
+
 	public int getTeam1Score() {
 		return team1score;
 	}

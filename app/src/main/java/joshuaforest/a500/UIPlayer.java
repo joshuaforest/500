@@ -30,7 +30,7 @@ public class UIPlayer extends Player {
 
     @Override
     public void takeBlind(ArrayList<Card> blind) {
-        //TODO
+        this.act.takeBlind();
 
     }
 

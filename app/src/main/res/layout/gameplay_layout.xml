@@ -69,6 +69,109 @@
 
 
     <LinearLayout
+        android:id="@+id/blindLayout"
+        android:layout_width="368dp"
+        android:layout_height="80dp"
+        android:gravity="center"
+        android:orientation="horizontal"
+        android:visibility="gone"
+        app:layout_constraintBottom_toTopOf="@id/handLayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent">
+
+        <ImageButton
+            android:id="@+id/imageBlindButton20"
+            android:layout_width="35dp"
+            android:layout_height="80dp"
+            android:background="@null"
+            android:onClick="selectBlindCard"
+            android:scaleType="fitXY"
+            android:src="@drawable/ace_of_clubs" />
+
+        <ImageButton
+            android:id="@+id/imageBlindButton19"
+            android:layout_width="35dp"
+            android:layout_height="80dp"
+            android:background="@null"
+            android:onClick="selectBlindCard"
+            android:scaleType="fitXY"
+            android:src="@drawable/ace_of_clubs" />
+
+        <ImageButton
+            android:id="@+id/imageBlindButton18"
+            android:layout_width="35dp"
+            android:layout_height="80dp"
+            android:background="@null"
+            android:onClick="selectBlindCard"
+            android:scaleType="fitXY"
+            android:src="@drawable/ace_of_clubs" />
+
+        <ImageButton
+            android:id="@+id/imageBlindButton17"
+            android:layout_width="35dp"
+            android:layout_height="80dp"
+            android:background="@null"
+            android:onClick="selectBlindCard"
+            android:scaleType="fitXY"
+            android:src="@drawable/ace_of_clubs" />
+
+        <ImageButton
+            android:id="@+id/imageBlindButton16"
+            android:layout_width="35dp"
+            android:layout_height="80dp"
+            android:background="@null"
+            android:onClick="selectBlindCard"
+            android:scaleType="fitXY"
+            android:src="@drawable/ace_of_clubs" />
+
+        <ImageButton
+            android:id="@+id/imageBlindButton15"
+            android:layout_width="35dp"
+            android:layout_height="80dp"
+            android:background="@null"
+            android:onClick="selectBlindCard"
+            android:scaleType="fitXY"
+            android:src="@drawable/ace_of_clubs" />
+
+        <ImageButton
+            android:id="@+id/imageBlindButton14"
+            android:layout_width="35dp"
+            android:layout_height="80dp"
+            android:background="@null"
+            android:onClick="selectBlindCard"
+            android:scaleType="fitXY"
+            android:src="@drawable/ace_of_clubs" />
+
+        <ImageButton
+            android:id="@+id/imageBlindButton13"
+            android:layout_width="35dp"
+            android:layout_height="80dp"
+            android:background="@null"
+            android:onClick="selectBlindCard"
+            android:scaleType="fitXY"
+            android:src="@drawable/ace_of_clubs" />
+
+        <ImageButton
+            android:id="@+id/imageBlindButton12"
+            android:layout_width="35dp"
+            android:layout_height="80dp"
+            android:background="@null"
+            android:onClick="selectBlindCard"
+            android:scaleType="fitXY"
+            android:src="@drawable/ace_of_clubs" />
+
+        <ImageButton
+            android:id="@+id/imageBlindButton11"
+            android:layout_width="35dp"
+            android:layout_height="80dp"
+            android:background="@null"
+            android:onClick="selectBlindCard"
+            android:scaleType="fitXY"
+            android:src="@drawable/ace_of_clubs" />
+    </LinearLayout>
+
+
+    <LinearLayout
         android:id="@+id/handLayout"
         android:layout_width="368dp"
         android:layout_height="80dp"
