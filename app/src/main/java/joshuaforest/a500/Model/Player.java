@@ -84,37 +84,23 @@ public abstract class Player {
 	}
 
 	public void sortHand(String trump){
-	    if(trump.equals("Spades")){
-	        //TODO
+		ArrayList<Card> sortedHand = new ArrayList<Card>();
+		for(Card cins : hand){
+			if(sortedHand.size()==0){
+				sortedHand.add(cins);
+			} else {
+				int size = sortedHand.size();
+				for (int i = 0; i < size; i++) {
+					Card ccomp = sortedHand.get(i);
+					if (!cins.compareTo(ccomp, trump)) {
+						sortedHand.add(i, cins);
+						i = size;
+					} else if(i == size-1) sortedHand.add(cins);
+				}
+			}
+		}
+		hand = sortedHand;
 
-        } else if(trump.equals("Clubs")){
-	        //TODO
-
-        } else if(trump.equals("Diamonds")){
-	        //TODO
-
-        } else if(trump.equals("Hearts")){
-	        //TODO
-
-        } else {
-            ArrayList<Card> sortedHand = new ArrayList<Card>();
-            for(Card cins : hand){
-                if(sortedHand.size()==0){
-                    sortedHand.add(cins);
-                } else {
-                    int size = sortedHand.size();
-                    for (int i = 0; i < size; i++) {
-                        Card ccomp = sortedHand.get(i);
-                        if (!cins.compareTo(ccomp)) {
-                            sortedHand.add(i, cins);
-                            i = size;
-                        } else if(i == size-1) sortedHand.add(cins);
-                    }
-                }
-            }
-            hand = sortedHand;
-
-        }
     }
 	
 }

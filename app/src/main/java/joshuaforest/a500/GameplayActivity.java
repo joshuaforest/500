@@ -120,11 +120,11 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
 
     }
 
-
     public void takeBlind() {
         state = gameState.BLIND_CHOOSING;
         bidLayout.setVisibility(View.GONE);
         blindLayout.setVisibility(View.VISIBLE);
+        player.sortHand(g.getBid().getSuit());
 
         ArrayList<Card> cards = player.getHand();
         for(int i=0;i<blindLayout.getChildCount();i++){
@@ -143,17 +143,26 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
         for(int i=0;i<cards.size();i++){
             ImageButton b = (ImageButton) handLayout.getChildAt(i);
             b.setClickable(true);
+            String fileName = cards.get(i).getFileName();
+            int resourceId = getResources().getIdentifier(fileName, "drawable", getPackageName());
+            b.setImageResource(resourceId);
+            b.setTag(cards.get(i));
         }
         for(TextView t : playerBids){
             t.setVisibility(View.GONE);
         }
     }
 
-
     public void setViewHandToNothing(){
         for(int i=0;i<handLayout.getChildCount();i++){
             ImageButton b = (ImageButton) handLayout.getChildAt(i);
             b.setImageDrawable(null);
+            b.setVisibility(View.GONE);
+        }
+        for(int i=0;i<blindLayout.getChildCount();i++){
+            ImageButton b = (ImageButton) blindLayout.getChildAt(i);
+            b.setImageDrawable(null);
+            b.setVisibility(View.GONE);
         }
     }
 
@@ -164,16 +173,53 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
         startActivity(quitGame);
     }
 
+    public void drawHandCards(){
+        ArrayList<Card> cards = player.getHand();
+        for(int i=0;i<cards.size();i++){
+            ImageButton b = (ImageButton) handLayout.getChildAt(i);
+            String fileName = cards.get(i).getFileName();
+            int resourceId = getResources().getIdentifier(fileName, "drawable", getPackageName());
+            b.setImageResource(resourceId);
+            b.setTag(cards.get(i));
+            b.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void drawBlindCards(){
+        ArrayList<Card> cards = g.getBlind();
+        for(int i=0;i<cards.size();i++){
+            ImageButton b = (ImageButton) blindLayout.getChildAt(i);
+            String fileName = cards.get(i).getFileName();
+            int resourceId = getResources().getIdentifier(fileName, "drawable", getPackageName());
+            b.setImageResource(resourceId);
+            b.setTag(cards.get(i));
+            b.setVisibility(View.VISIBLE);
+        }
+    }
+
+    public void selectBlindCard(View view){
+        if(player.getHand().size() >= 10) return;
+        ImageButton b = (ImageButton) view;
+        Card c = (Card) b.getTag();
+        g.getBlind().remove(c);
+        player.getHand().add(c);
+        player.sortHand(g.getBid().getSuit());
+        setViewHandToNothing();
+        drawBlindCards();
+        drawHandCards();
+    }
+
     public void selectCard(View view) {
         if(state == gameState.BLIND_CHOOSING){
             if(player.getHand().size() <= 5) return;
             ImageButton b = (ImageButton) view;
-            b.setImageDrawable(null);
-            b.setVisibility(view.GONE);
-            player.getHand().remove(b.getTag());
-            for(int i = 0; i < 10; i++){
-
-            }
+            Card c = (Card) b.getTag();
+            player.getHand().remove(c);
+            g.getBlind().add(c);
+            player.sortHand(g.getBid().getSuit());
+            setViewHandToNothing();
+            drawBlindCards();
+            drawHandCards();
         } else{
             ImageButton b = (ImageButton) view;
             b.setImageDrawable(null);

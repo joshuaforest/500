@@ -51,13 +51,39 @@ public class Card {
 		return name;
 	}
 
+
+	private boolean isTrump(String trump) {
+		if(getIsJoker()) return true;
+		if(trump.equals("Hearts")) {
+			if(getSuit().equals("Hearts") || (getSuit().equals("Diamonds")&&getRank()==11)) return true;
+		}
+		if(trump.equals("Diamonds")) {
+			if(getSuit().equals("Diamonds") || (getSuit().equals("Hearts")&&getRank()==11)) return true;
+		}
+		if(trump.equals("Spades")) {
+			if(getSuit().equals("Spades") || (getSuit().equals("Clubs")&&getRank()==11)) return true;
+		}
+		if(trump.equals("Clubs")) {
+			if(getSuit().equals("Clubs") || (getSuit().equals("Spades")&&getRank()==11)) return true;
+		}
+		return false;
+	}
+
 	/**
 	 * for purposes of sorting hands
 	 * @return if this card is greater than c
 	 */
-	public boolean compareTo(Card c){
+	public boolean compareTo(Card c, String trump){
 	    if(c.isJoker) return false;
 	    if(this.isJoker) return true;
+	    if(c.isTrump(trump) && !this.isTrump(trump)) return false;
+		if(!c.isTrump(trump) && this.isTrump(trump)) return true;
+		if(c.isTrump(trump) && this.isTrump(trump)){
+			if(this.rank == 11 && this.suit.equals(trump)) return true;
+			if(c.rank == 11 && c.suit.equals(trump)) return false;
+			if(this.rank == 11) return true;
+			if(c.rank == 11) return false;
+		}
 	    if(c.suit.equals(this.suit)){
 	    	return this.rank > c.rank;
 		}
