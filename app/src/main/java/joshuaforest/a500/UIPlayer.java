@@ -45,5 +45,8 @@ public class UIPlayer extends Player {
         act.startGame();
     }
 
+    public void notifyBlindTaken(){
+        g.notifyBlindTaken();
+    }
 
 }

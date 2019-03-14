@@ -31,10 +31,12 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
     LinearLayout bidLayout;
     LinearLayout blindLayout;
     Button bid;
+    Button accept;
     Spinner bidNumbers;
     Spinner bidSuit;
     TextView[] playerBids;
     gameState state;
+
 
     Game g;
     UIPlayer player;
@@ -73,6 +75,7 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
         bidNumbers = (Spinner) bidLayout.findViewById(R.id.spnNumber);
         bidSuit = (Spinner) bidLayout.findViewById(R.id.spnSuit);
         bid = (Button) bidLayout.findViewById(R.id.btnBid);
+        accept = (Button)  findViewById(R.id.btn_accept);
 
         TextView player0bid = (TextView) findViewById(R.id.textView);
         TextView player1bid = (TextView) findViewById(R.id.textView1);
@@ -121,9 +124,11 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
     }
 
     public void takeBlind() {
+        accept.setEnabled(true);
         state = gameState.BLIND_CHOOSING;
         bidLayout.setVisibility(View.GONE);
         blindLayout.setVisibility(View.VISIBLE);
+        accept.setVisibility(View.VISIBLE);
         player.sortHand(g.getBid().getSuit());
 
         ArrayList<Card> cards = player.getHand();
@@ -153,6 +158,11 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
         }
     }
 
+    public void onBtnAccept(View view){
+        accept.setVisibility(View.GONE);
+        player.notifyBlindTaken();
+    }
+
     public void setViewHandToNothing(){
         for(int i=0;i<handLayout.getChildCount();i++){
             ImageButton b = (ImageButton) handLayout.getChildAt(i);
@@ -165,7 +175,6 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
             b.setVisibility(View.GONE);
         }
     }
-
 
     public void onBtnQuit(View view) {
         Intent quitGame = new Intent( getApplicationContext(), MainActivity.class);
@@ -207,6 +216,7 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
         setViewHandToNothing();
         drawBlindCards();
         drawHandCards();
+        if(player.getHand().size() == 10) accept.setEnabled(true);
     }
 
     public void selectCard(View view) {
@@ -220,6 +230,7 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
             setViewHandToNothing();
             drawBlindCards();
             drawHandCards();
+            if(player.getHand().size() != 10) accept.setEnabled(false);
         } else{
             ImageButton b = (ImageButton) view;
             b.setImageDrawable(null);

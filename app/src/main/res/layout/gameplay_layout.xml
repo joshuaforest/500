@@ -21,6 +21,18 @@
         app:layout_constraintTop_toTopOf="parent" />
 
 
+
+    <Button
+        android:id="@+id/btn_accept"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="Accept Hand"
+        android:onClick="onBtnAccept"
+        android:visibility="gone"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/blindLayout" />
+
     <LinearLayout
         android:id="@+id/bidLayout"
         android:layout_width="368dp"
