@@ -35,6 +35,7 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
     Spinner bidNumbers;
     Spinner bidSuit;
     TextView[] playerBids;
+    ImageButton[] playedCards;
     gameState state;
 
 
@@ -86,6 +87,52 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
             t.setVisibility(View.INVISIBLE);
         }
         this.playerBids = playerBids;
+
+        ImageButton player0Card = (ImageButton) findViewById(R.id.imageButtonPlayedCard);
+        ImageButton player1Card = (ImageButton) findViewById(R.id.imageButtonPlayedCard1);
+        ImageButton player2Card = (ImageButton) findViewById(R.id.imageButtonPlayedCard2);
+        ImageButton player3Card = (ImageButton) findViewById(R.id.imageButtonPlayedCard3);
+        ImageButton[] playedCards = {player0Card, player1Card, player2Card, player3Card};
+        for(ImageButton b : playedCards){
+            b.setVisibility(View.INVISIBLE);
+            b.setClickable(false);
+        }
+        this.playedCards = playedCards;
+
+    }
+
+    public void disableCards(){
+        for(int i=0;i<handLayout.getChildCount();i++){
+            ImageButton b = (ImageButton) handLayout.getChildAt(i);
+            b.setClickable(false);
+        }
+    }
+
+    public void enableCards(){
+        for(int i=0;i<handLayout.getChildCount();i++){
+            ImageButton b = (ImageButton) handLayout.getChildAt(i);
+            b.setClickable(true);
+        }
+    }
+
+    public void needCard(){
+        enableCards();
+        state = gameState.PLAYING;
+
+        for(TextView t: playerBids){
+            t.setVisibility(View.GONE);
+        }
+        bidLayout.setVisibility(View.GONE);
+
+
+        for(int i = 0; i<4; i++){
+            if(g.getPlayedCards()[i]!= null){
+                String fileName = g.getPlayedCards()[i].getFileName();
+                int resourceId = getResources().getIdentifier(fileName, "drawable", getPackageName());
+                playedCards[i].setImageResource(resourceId);
+                playedCards[i].setVisibility(View.VISIBLE);
+            }
+        }
     }
 
     public void startGame(){
@@ -99,6 +146,9 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
         bidSuitGiven = false;
         bid.setEnabled(false);
         state = gameState.BIDDING;
+
+        bidLayout.setVisibility(View.VISIBLE);
+
         //Set bid number resources to bid number spinner
         ArrayAdapter<CharSequence> numAdapter = ArrayAdapter.createFromResource(this, R.array.numbers, android.R.layout.simple_spinner_item);
         numAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -160,6 +210,8 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
 
     public void onBtnAccept(View view){
         accept.setVisibility(View.GONE);
+        blindLayout.setVisibility(View.GONE);
+        disableCards();
         player.notifyBlindTaken();
     }
 
@@ -233,8 +285,18 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
             if(player.getHand().size() != 10) accept.setEnabled(false);
         } else{
             ImageButton b = (ImageButton) view;
-            b.setImageDrawable(null);
-            b.setVisibility(view.GONE);
+            Card c = (Card) b.getTag();
+            if(player.checkEligiblePlay(c)){
+                player.getHand().remove(c);
+                setViewHandToNothing();
+                drawHandCards();
+                disableCards();
+                for(int i = 0; i<4; i++){
+                    playedCards[i].setImageDrawable(null);
+                    playedCards[i].setVisibility(View.GONE);
+                }
+                g.notifyCardPlayed(c);
+            }
         }
     }
 
@@ -314,5 +376,11 @@ public class GameplayActivity extends Activity implements AdapterView.OnItemSele
         player.makeBid(b);
     }
 
+    public int getPlayerIndex(Player p){
+        for(int i = 0; i < this.p.length; i++) {
+            if(p == this.p[i]) return i;
+        }
+        return -1;
+    }
 
 }

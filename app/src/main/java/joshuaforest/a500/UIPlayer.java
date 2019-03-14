@@ -25,7 +25,7 @@ public class UIPlayer extends Player {
 
     @Override
     public void needCard() {
-        //TODO
+        this.act.needCard();
     }
 
     @Override
